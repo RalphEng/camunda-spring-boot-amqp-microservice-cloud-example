@@ -13,51 +13,52 @@ import com.camunda.demo.springboot.ProcessConstants;
 @ConfigurationProperties
 public class RetrievePaymentAdapter implements JavaDelegate {
 
-  @Autowired
-  private RestTemplate rest;
+    @Autowired
+    private RestTemplate rest;
 
-  private String restProxyHost;
-  private String restProxyPort;
+    private String restProxyHost;
 
-  private String restEndpoint() {
-    return "http://" + restProxyHost + ":" + restProxyPort + "/payment/charges";
-  }
-  
-  public static class CreateChargeRequest {
-    public int amount; 
-  }
+    private String restProxyPort;
 
-  public static class CreateChargeResponse {
-    public String transactionId; 
-  }
+    private String restEndpoint() {
+        return "http://" + this.restProxyHost + ":" + this.restProxyPort + "/payment/charges";
+    }
 
-  @Override
-  public void execute(DelegateExecution ctx) throws Exception {
-    CreateChargeRequest request = new CreateChargeRequest();
-    request.amount = (int) ctx.getVariable(ProcessConstants.VAR_NAME_amount);
-    
-    CreateChargeResponse response = rest.postForObject( //
-        restEndpoint(), //
-        request, //
-        CreateChargeResponse.class);
-    
-    ctx.setVariable(ProcessConstants.VARIABLE_paymentTransactionId, response.transactionId);
-  }
+    public static class CreateChargeRequest {
+        public int amount;
+    }
 
-  public String getRestProxyHost() {
-    return restProxyHost;
-  }
+    public static class CreateChargeResponse {
+        public String transactionId;
+    }
 
-  public void setRestProxyHost(String restProxyHost) {
-    this.restProxyHost = restProxyHost;
-  }
+    @Override
+    public void execute(final DelegateExecution ctx) throws Exception {
+        CreateChargeRequest request = new CreateChargeRequest();
+        request.amount = (int) ctx.getVariable(ProcessConstants.VAR_NAME_amount);
 
-  public String getRestProxyPort() {
-    return restProxyPort;
-  }
+        CreateChargeResponse response = this.rest.postForObject( //
+                restEndpoint(), //
+                request, //
+                CreateChargeResponse.class);
 
-  public void setRestProxyPort(String restProxyPort) {
-    this.restProxyPort = restProxyPort;
-  }
+        ctx.setVariable(ProcessConstants.VARIABLE_paymentTransactionId, response.transactionId);
+    }
+
+    public String getRestProxyHost() {
+        return this.restProxyHost;
+    }
+
+    public void setRestProxyHost(final String restProxyHost) {
+        this.restProxyHost = restProxyHost;
+    }
+
+    public String getRestProxyPort() {
+        return this.restProxyPort;
+    }
+
+    public void setRestProxyPort(final String restProxyPort) {
+        this.restProxyPort = restProxyPort;
+    }
 
 }

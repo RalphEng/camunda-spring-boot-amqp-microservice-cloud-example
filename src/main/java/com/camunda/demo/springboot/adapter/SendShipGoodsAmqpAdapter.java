@@ -11,17 +11,17 @@ import com.camunda.demo.springboot.ProcessConstants;
 @Component
 public class SendShipGoodsAmqpAdapter implements JavaDelegate {
 
-  @Autowired
-  protected RabbitTemplate rabbitTemplate;
-  
-  @Override
-  public void execute(DelegateExecution ctx) throws Exception {
-    String orderId = (String) ctx.getVariable(ProcessConstants.VAR_NAME_orderId);    
-    
-    String exchange = "shipping";
-    String routingKey = "createShipment";
-    
-    rabbitTemplate.convertAndSend(exchange, routingKey, orderId);
-  }
+    @Autowired
+    protected RabbitTemplate rabbitTemplate;
+
+    @Override
+    public void execute(final DelegateExecution ctx) throws Exception {
+        String orderId = (String) ctx.getVariable(ProcessConstants.VAR_NAME_orderId);
+
+        String exchange = "shipping";
+        String routingKey = "createShipment";
+
+        this.rabbitTemplate.convertAndSend(exchange, routingKey, orderId);
+    }
 
 }

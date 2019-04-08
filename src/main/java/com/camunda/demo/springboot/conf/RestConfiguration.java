@@ -15,17 +15,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Configuration
 public class RestConfiguration {
 
-  @Autowired
-  private ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-  @Bean
-  public RestTemplate createRestTemplate() {
-    RestTemplate restTemplate = new RestTemplate();
-    List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
-    MappingJackson2HttpMessageConverter jsonMessageConverter = new MappingJackson2HttpMessageConverter();
-    jsonMessageConverter.setObjectMapper(objectMapper);
-    messageConverters.add(jsonMessageConverter);
-    restTemplate.setMessageConverters(messageConverters);
-    return restTemplate;
-  }
+    @Bean
+    public RestTemplate createRestTemplate() {
+        RestTemplate restTemplate = new RestTemplate();
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+        MappingJackson2HttpMessageConverter jsonMessageConverter = new MappingJackson2HttpMessageConverter();
+        jsonMessageConverter.setObjectMapper(this.objectMapper);
+        messageConverters.add(jsonMessageConverter);
+        restTemplate.setMessageConverters(messageConverters);
+        return restTemplate;
+    }
 }

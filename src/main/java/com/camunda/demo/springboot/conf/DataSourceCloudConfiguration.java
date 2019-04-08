@@ -12,14 +12,14 @@ import org.springframework.context.annotation.Profile;
 @Profile("cloud")
 public class DataSourceCloudConfiguration {
 
-  @Bean
-  public Cloud cloud() {
-    return new CloudFactory().getCloud();
-  }
+    @Bean
+    public Cloud cloud() {
+        return new CloudFactory().getCloud();
+    }
 
-  @Bean
-  public DataSource dataSource() {
-    return cloud().getSingletonServiceConnector(DataSource.class, null);
-  }
+    @Bean
+    public DataSource dataSource() {
+        return cloud().getSingletonServiceConnector(DataSource.class, null);
+    }
 
 }

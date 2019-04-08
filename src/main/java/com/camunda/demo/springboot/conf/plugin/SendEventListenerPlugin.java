@@ -15,13 +15,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class SendEventListenerPlugin extends AbstractProcessEnginePlugin {
 
-	@Override
-	public void preInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
-		if (processEngineConfiguration.getCustomPostBPMNParseListeners() == null) {
-			processEngineConfiguration.setCustomPostBPMNParseListeners(new ArrayList<BpmnParseListener>());
-		}
-		processEngineConfiguration.getCustomPostBPMNParseListeners().add(new AddSendEventListenerToBpmnParseListener());
+    @Override
+    public void preInit(final ProcessEngineConfigurationImpl processEngineConfiguration) {
+        if (processEngineConfiguration.getCustomPostBPMNParseListeners() == null) {
+            processEngineConfiguration.setCustomPostBPMNParseListeners(new ArrayList<BpmnParseListener>());
+        }
+        processEngineConfiguration.getCustomPostBPMNParseListeners().add(new AddSendEventListenerToBpmnParseListener());
 
-	}
+    }
 
 }

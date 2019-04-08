@@ -25,72 +25,74 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableProcessApplication
 public class Application {
 
-  public static void main(String... args) {
-    SpringApplication.run(Application.class, args);
+    public static void main(final String... args) {
+        SpringApplication.run(Application.class, args);
 
-    // do default setup of platform
-    ProcessEngine engine = BpmPlatform.getDefaultProcessEngine();
-    createDefaultUser(engine);
-    //setCamundaEELicenseKey(engine);
-  }
-
-  public static void createDefaultUser(ProcessEngine engine) {
-    // and add default user to Camunda to be ready-to-go
-    if (engine.getIdentityService().createUserQuery().userId("demo").count() == 0) {
-      User user = engine.getIdentityService().newUser("demo");
-      user.setFirstName("Demo");
-      user.setLastName("Demo");
-      user.setPassword("demo");
-      user.setEmail("demo@camunda.org");
-      engine.getIdentityService().saveUser(user);
-
-      Group group = engine.getIdentityService().newGroup(Groups.CAMUNDA_ADMIN);
-      group.setName("Administrators");
-      group.setType(Groups.GROUP_TYPE_SYSTEM);
-      engine.getIdentityService().saveGroup(group);
-
-      for (Resource resource : Resources.values()) {
-        Authorization auth = engine.getAuthorizationService().createNewAuthorization(AUTH_TYPE_GRANT);
-        auth.setGroupId(Groups.CAMUNDA_ADMIN);
-        auth.addPermission(ALL);
-        auth.setResourceId(ANY);
-        auth.setResource(resource);
-        engine.getAuthorizationService().saveAuthorization(auth);
-      }
-
-      engine.getIdentityService().createMembership("demo", Groups.CAMUNDA_ADMIN);
+        // do default setup of platform
+        ProcessEngine engine = BpmPlatform.getDefaultProcessEngine();
+        createDefaultUser(engine);
+        //setCamundaEELicenseKey(engine);
     }
 
-    // create default "all tasks" filter
-    if (engine.getFilterService().createFilterQuery().filterName("Alle").count() == 0) {
+    public static void createDefaultUser(final ProcessEngine engine) {
+        // and add default user to Camunda to be ready-to-go
+        if (engine.getIdentityService().createUserQuery().userId("demo").count() == 0) {
+            User user = engine.getIdentityService().newUser("demo");
+            user.setFirstName("Demo");
+            user.setLastName("Demo");
+            user.setPassword("demo");
+            user.setEmail("demo@camunda.org");
+            engine.getIdentityService().saveUser(user);
 
-      Map<String, Object> filterProperties = new HashMap<String, Object>();
-      filterProperties.put("description", "Alle Aufgaben");
-      filterProperties.put("priority", 10);
+            Group group = engine.getIdentityService().newGroup(Groups.CAMUNDA_ADMIN);
+            group.setName("Administrators");
+            group.setType(Groups.GROUP_TYPE_SYSTEM);
+            engine.getIdentityService().saveGroup(group);
 
-      Filter filter = engine.getFilterService().newTaskFilter() //
-          .setName("Alle") //
-          .setProperties(filterProperties)//
-          .setOwner("demo")//
-          .setQuery(engine.getTaskService().createTaskQuery());
-      engine.getFilterService().saveFilter(filter);
+            for (Resource resource : Resources.values()) {
+                Authorization auth = engine.getAuthorizationService().createNewAuthorization(AUTH_TYPE_GRANT);
+                auth.setGroupId(Groups.CAMUNDA_ADMIN);
+                auth.addPermission(ALL);
+                auth.setResourceId(ANY);
+                auth.setResource(resource);
+                engine.getAuthorizationService().saveAuthorization(auth);
+            }
 
-      // and authorize demo user for it
-      if (engine.getAuthorizationService().createAuthorizationQuery().resourceType(FILTER).resourceId(filter.getId()) //
-          .userIdIn("demo").count() == 0) {
-        Authorization managementGroupFilterRead = engine.getAuthorizationService().createNewAuthorization(Authorization.AUTH_TYPE_GRANT);
-        managementGroupFilterRead.setResource(FILTER);
-        managementGroupFilterRead.setResourceId(filter.getId());
-        managementGroupFilterRead.addPermission(ALL);
-        managementGroupFilterRead.setUserId("demo");
-        engine.getAuthorizationService().saveAuthorization(managementGroupFilterRead);
-      }
+            engine.getIdentityService().createMembership("demo", Groups.CAMUNDA_ADMIN);
+        }
 
+        // create default "all tasks" filter
+        if (engine.getFilterService().createFilterQuery().filterName("Alle").count() == 0) {
+
+            Map<String, Object> filterProperties = new HashMap<>();
+            filterProperties.put("description", "Alle Aufgaben");
+            filterProperties.put("priority", 10);
+
+            Filter filter = engine.getFilterService().newTaskFilter() //
+                    .setName("Alle") //
+                    .setProperties(filterProperties)//
+                    .setOwner("demo")//
+                    .setQuery(engine.getTaskService().createTaskQuery());
+            engine.getFilterService().saveFilter(filter);
+
+            // and authorize demo user for it
+            if (engine.getAuthorizationService().createAuthorizationQuery().resourceType(FILTER)
+                    .resourceId(filter.getId()) //
+                    .userIdIn("demo").count() == 0) {
+                Authorization managementGroupFilterRead = engine.getAuthorizationService()
+                        .createNewAuthorization(Authorization.AUTH_TYPE_GRANT);
+                managementGroupFilterRead.setResource(FILTER);
+                managementGroupFilterRead.setResourceId(filter.getId());
+                managementGroupFilterRead.addPermission(ALL);
+                managementGroupFilterRead.setUserId("demo");
+                engine.getAuthorizationService().saveAuthorization(managementGroupFilterRead);
+            }
+
+        }
     }
-  }
 
-  public static void setCamundaEELicenseKey(ProcessEngine engine) {
-    engine.getManagementService().setProperty("camunda-license-key", "xxxx");
-  }
+    public static void setCamundaEELicenseKey(final ProcessEngine engine) {
+        engine.getManagementService().setProperty("camunda-license-key", "xxxx");
+    }
 
 }

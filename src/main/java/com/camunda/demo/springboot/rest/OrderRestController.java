@@ -13,24 +13,24 @@ import com.camunda.demo.springboot.ProcessConstants;
 @RestController
 @RequestMapping("/order")
 public class OrderRestController {
-  
-  @Autowired
-  private ProcessEngine camunda;
 
-  @RequestMapping(method=RequestMethod.POST)
-  public void placeOrderPOST(String orderId, int amount) {
-    placeOrder(orderId, amount);
-  }
+    @Autowired
+    private ProcessEngine camunda;
 
-  /**
-   * we need a method returning the {@link ProcessInstance} to allow for easier tests,
-   * that's why I separated the REST method (without return) from the actual implementaion (with return value)
-   */
-  public ProcessInstance placeOrder(String orderId, int amount) {
-    return camunda.getRuntimeService().startProcessInstanceByKey(//
-        ProcessConstants.PROCESS_KEY_order, //
-        Variables //
-          .putValue(ProcessConstants.VAR_NAME_orderId, orderId) //
-          .putValue(ProcessConstants.VAR_NAME_amount, amount));
-  }
+    @RequestMapping(method = RequestMethod.POST)
+    public void placeOrderPOST(final String orderId, final int amount) {
+        placeOrder(orderId, amount);
+    }
+
+    /**
+     * we need a method returning the {@link ProcessInstance} to allow for easier tests,
+     * that's why I separated the REST method (without return) from the actual implementaion (with return value)
+     */
+    public ProcessInstance placeOrder(final String orderId, final int amount) {
+        return this.camunda.getRuntimeService().startProcessInstanceByKey(//
+                ProcessConstants.PROCESS_KEY_order, //
+                Variables //
+                        .putValue(ProcessConstants.VAR_NAME_orderId, orderId) //
+                        .putValue(ProcessConstants.VAR_NAME_amount, amount));
+    }
 }

@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/payment")
 public class PaymentDummyRestController {
-  
-  public static class CreateChargeRequest {
-    public int amount;
-  }
 
-  @RequestMapping(path="/charges", method=RequestMethod.POST)
-  public String createCharge(@RequestBody CreateChargeRequest request) {
-    return "{\"transactionId\": \"77412\"}";
-  }
+    public static class CreateChargeRequest {
+        public int amount;
+    }
+
+    @RequestMapping(path = "/charges", method = RequestMethod.POST)
+    public String createCharge(@RequestBody final CreateChargeRequest request) {
+        return "{\"transactionId\": \"77412\"}";
+    }
 }

@@ -1,6 +1,5 @@
 package com.camunda.demo.springboot.conf;
 
-
 import org.camunda.bpm.engine.impl.db.DbIdGenerator;
 import org.camunda.bpm.engine.impl.persistence.StrongUuidGenerator;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
@@ -12,10 +11,11 @@ import org.springframework.context.annotation.Configuration;
  * Use {@link StrongUuidGenerator} to avoid potential problems in cluster environments with {@link DbIdGenerator}
  */
 @Configuration
-public class CamundaIdGeneratorConfiguration extends AbstractCamundaConfiguration implements CamundaHistoryLevelAutoHandlingConfiguration {
+public class CamundaIdGeneratorConfiguration extends AbstractCamundaConfiguration
+        implements CamundaHistoryLevelAutoHandlingConfiguration {
 
-  @Override
-  public void preInit(SpringProcessEngineConfiguration configuration) {
-    configuration.setIdGenerator(new StrongUuidGenerator());
-  }
+    @Override
+    public void preInit(final SpringProcessEngineConfiguration configuration) {
+        configuration.setIdGenerator(new StrongUuidGenerator());
+    }
 }
