@@ -117,6 +117,11 @@ mvn clean install
 
 * Install [RabbitMQ](http://rabbitmq.com/) and start it up
 
+For example via Docker:
+```
+docker run -d --rm --hostname my-rabbit --name some-rabbit -p 4369:4369 -p 5671:5671 -p 5672:5672 -p 15671:15671 -p 15672:15672 -p 25672:25672 rabbitmq:3-management
+```
+
 * Run microservice via Java:
 ```shell
 java -jar target/camunda-spring-boot-amqp-microservice-cloud-example-0.0.1-SNAPSHOT.jar
