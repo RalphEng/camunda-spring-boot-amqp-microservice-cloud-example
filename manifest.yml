@@ -1,10 +1,12 @@
 ---
 applications:
-  - name: camunda-spring-boot-amqp-microservice-cloud-example
-    memory: 1G
-    instances: 1
-    random-route: false
-
-services:
-  - cloud-amqp
-  - camunda-db
+- name: camunda-boot-cloud-example
+  path: /target/camunda-spring-boot-amqp-microservice-cloud-example.jar
+  buildpacks:
+  - https://github.com/cloudfoundry/java-buildpack.git
+  memory: 1G
+  instances: 1
+  random-route: false  
+  services:
+  - camunda-boot-cloud-example-cloudAmqp
+  - camunda-boot-cloud-example-elephantSql
