@@ -151,8 +151,8 @@ And using the [Spring Cloud Connectors](http://cloud.spring.io/spring-cloud-conn
 
 The example I show here is:
 * Deployment on [Pivotal Web Services](https://run.pivotal.io/)
-* [ElephantSQL](https://www.elephantsql.com/) as hosted PostgreSQL, started as Service named ```camunda-db```
-* [CloudAMPQ](https://www.cloudamqp.com/) as hosted RabbitMQ - started as Service ```cloud-amqp```
+* [ElephantSQL](https://www.elephantsql.com/) as hosted PostgreSQL, started as Service named ```camunda-boot-cloud-example-elephantSql```
+* [CloudAMPQ](https://www.cloudamqp.com/) as hosted RabbitMQ - started as Service ``amunda-boot-cloud-example-cloudAmqp```
 
 All metadata for the deployment are described in the [manifest.yml](manifest.yml):
 
